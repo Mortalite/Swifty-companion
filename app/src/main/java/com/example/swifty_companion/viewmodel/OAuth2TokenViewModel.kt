@@ -3,29 +3,24 @@ package com.example.swifty_companion.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.swifty_companion.network.ClientCredentialsDTO
-import com.example.swifty_companion.network.FilterByLoginDTO
 import com.example.swifty_companion.network.UserInfoDTO
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.okhttp.*
-import io.ktor.client.features.*
 import io.ktor.client.features.auth.*
 import io.ktor.client.features.auth.providers.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import io.ktor.http.*
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class OAuth2TokenViewModel: ViewModel() {
 
     var client: HttpClient? = null
     var clientCredentials: ClientCredentialsDTO? = null
-    val format = Json {
+    val jsonFormat = Json {
         isLenient = true
         ignoreUnknownKeys = true
         prettyPrint = true
@@ -34,13 +29,24 @@ class OAuth2TokenViewModel: ViewModel() {
     init {
         initClient()
 
+/*//        Log.e("OAUTH2 USER INFO", format.encodeToString(getUserInfo("dmortal")))
         getUserInfo("dmortal")?.let { longLog(format.encodeToString(it)) }
-//        getUserInfo("dmortal")?.let { longLog(it) }
-
-//        Log.e("OAUTH2 USER INFO", format.encodeToString(getUserInfo("dmortal")))
-
-//        Log.e("OAUTH2 USER INFO", format.encodeToString(getUserInfo("dmortal")))
+        runBlocking {
+            delay(1000L * 1L)
+        }
         Log.e("OAUTH2 CLIENT", format.encodeToString(clientCredentials))
+        runBlocking {
+            delay(1000L * 1L)
+        }
+        try {
+            val id = getUserInfo("NOTEXISTLOGINFORSURE")
+        }
+        catch (exception: ResponseException) {
+            Log.e("TEST", "id = ${exception.response.status}")
+
+        }
+//        Log.e("OAUTH2 USER INFO", format.encodeToString(getUserInfo("NOTEXISTLOGINFORSURE")))
+//        Log.e("OAUTH2 CLIENT", format.encodeToString(clientCredentials))*/
     }
 
     fun longLog(string: String) {
@@ -52,32 +58,11 @@ class OAuth2TokenViewModel: ViewModel() {
             Log.e("OAUTH2", string);
     }
 
-//    fun getUserInfo(login: String): String? = run {
-//        runBlocking {
-//            val id = getUserIdByLogin(login)
-//
-//            val response: HttpResponse? = client
-//                ?.get("https://api.intra.42.fr/v2/users/$id")
-//            response?.receive<String>()
-//        }
-//    }
-
     fun getUserInfo(login: String): UserInfoDTO? = run {
         runBlocking {
-            val id = getUserIdByLogin(login)
-
-            val response: HttpResponse? = client
-                ?.get("https://api.intra.42.fr/v2/users/$id")
-            response?.receive()
-        }
-    }
-
-    fun getUserIdByLogin(login: String): Long? = run {
-        runBlocking {
-           val response: HttpResponse? = client?.get("https://api.intra.42.fr/v2/users") {
-               parameter("filter[login]", login)
-           }
-           response?.receive<List<FilterByLoginDTO>>()?.get(0)?.id
+            client
+                ?.get<HttpResponse>("https://api.intra.42.fr/v2/users/$login")
+                ?.receive()
         }
     }
 
@@ -98,7 +83,7 @@ class OAuth2TokenViewModel: ViewModel() {
                 }
             }
             install(JsonFeature) {
-                serializer = KotlinxSerializer(json = format)
+                serializer = KotlinxSerializer(json = jsonFormat)
             }
         }
     }

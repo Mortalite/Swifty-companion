@@ -2,11 +2,15 @@ package com.example.swifty_companion
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.swifty_companion.databinding.FragmentSearchBinding
+import com.example.swifty_companion.viewmodel.OAuth2TokenViewModel
+import io.ktor.client.features.*
+import kotlinx.serialization.encodeToString
 
 class SearchFragment : Fragment() {
 
@@ -14,18 +18,22 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    private var connectionViewModel: ConnectionViewModel? = null
     private var mainCommunicator: MainCommunicator? = null
+    private var oAuth2TokenViewModel: OAuth2TokenViewModel? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainCommunicator = context as MainCommunicator
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        mainCommunicator = context as MainCommunicator
 
         initViewModel()
-        setOnClick()
+        setSearchButtonOnClick()
         return binding.root
     }
 
@@ -36,13 +44,41 @@ class SearchFragment : Fragment() {
     }
 
     fun initViewModel() {
-        connectionViewModel = ViewModelProvider(this).get(ConnectionViewModel::class.java)
+        oAuth2TokenViewModel = ViewModelProvider(this).get(OAuth2TokenViewModel::class.java)
     }
 
-    fun setOnClick() {
+    fun setSearchButtonOnClick() {
         binding.searchButton.setOnClickListener {
-            mainCommunicator?.openStudentInfoFragment(binding.searchEditText.text.toString())
+            oAuth2TokenViewModel?.let {
+                val login = binding.searchEditText.text.toString()
+
+                try {
+                    isValidLogin(login)
+
+                    val userInfo = it.getUserInfo(login)
+
+                    oAuth2TokenViewModel?.apply {
+                        longLog(jsonFormat.encodeToString(userInfo))
+                    }
+
+                    mainCommunicator?.openStudentInfoFragment(login)
+                }
+                catch (exception: IllegalArgumentException) {
+                    Log.e("TEST", exception.message.toString())
+                    binding.searchEditText.setHint(exception.message)
+                    binding.searchEditText.setText("")
+                }
+                catch (exception: ResponseException) {
+                    binding.searchEditText.setHint(exception.response.status.description)
+                    binding.searchEditText.setText("")
+                }
+            }
         }
+    }
+
+    fun isValidLogin(login: String) {
+        if (login.contains(Regex("[^a-zA-Z]")))
+            throw IllegalArgumentException("Login invalid")
     }
 
     companion object {

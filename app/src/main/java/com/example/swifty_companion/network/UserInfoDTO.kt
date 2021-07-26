@@ -28,7 +28,9 @@ data class cursusUsersDTO(
     @SerialName("level")
     val level: String,
     @SerialName("skills")
-    val skills: List<skillsDTO>
+    val skills: List<skillsDTO>,
+    @SerialName("cursus")
+    val cursus: cursusDTO
 )
 
 @Serializable
@@ -41,3 +43,10 @@ data class skillsDTO(
     val level: String,
 )
 
+@Serializable
+data class cursusDTO(
+    @SerialName("id")
+    val id: Long,
+    @SerialName("name")
+    val name: String
+)

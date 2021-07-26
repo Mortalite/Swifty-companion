@@ -16,10 +16,12 @@ class StudentInfoFragment : Fragment() {
     private var _binding: FragmentStudentInfoBinding? = null
     private val binding get() = _binding!!
 
+    private var mainCommunicator: MainCommunicator? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        login = arguments?.getString(BUNDLE_LOGIN_KEY)
+        mainCommunicator = context as MainCommunicator
     }
 
     override fun onCreateView(
@@ -27,6 +29,9 @@ class StudentInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentStudentInfoBinding.inflate(inflater, container, false)
+
+        setNavigationOnClickListener()
+        getDataFromArguments()
         return binding.root
     }
 
@@ -38,6 +43,16 @@ class StudentInfoFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun setNavigationOnClickListener() {
+        binding.toolbar.setNavigationOnClickListener {
+            mainCommunicator?.openSearchFragment()
+        }
+    }
+
+    private fun getDataFromArguments() {
+        login = arguments?.getString(BUNDLE_LOGIN_KEY)
     }
 
     companion object {

@@ -10,24 +10,17 @@ class MainActivity :    AppCompatActivity(),
                         MainCommunicator {
 
     private val TAG = this.javaClass.simpleName
-    private var oAuth2TokenViewModel: OAuth2TokenViewModel? = null
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        initViewModels()
     }
 
     override fun onStart() {
         super.onStart()
         openSearchFragment()
-    }
-
-    fun initViewModels() {
-        oAuth2TokenViewModel = ViewModelProvider(this).get(OAuth2TokenViewModel::class.java)
     }
 
     override fun openSearchFragment() {
