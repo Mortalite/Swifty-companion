@@ -6,8 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat.setNestedScrollingEnabled
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
+import com.example.swifty_companion.adapter.ProjectsAdapter
 import com.example.swifty_companion.databinding.FragmentStudentInfoBinding
 import com.example.swifty_companion.network.UserInfoDTO
 import com.example.swifty_companion.viewmodel.OAuth2TokenViewModel
@@ -35,14 +40,19 @@ class StudentInfoFragment : Fragment() {
 
         initViewModel()
         setNavigationOnClickListener()
+        setGeneralInformation()
 
-        binding.textViewLogin.text = userInfoViewModel?.userInfo?.value?.login
-        binding.textViewEmail.text = userInfoViewModel?.userInfo?.value?.email
-        binding.textViewPhone.text = userInfoViewModel?.userInfo?.value?.phone
-//        binding.textViewLevel.text = userInfoViewModel?.userInfo?
-        binding.textViewWallet.text = userInfoViewModel?.userInfo?.value?.wallet
-        Log.e("TEST2", "email = ${userInfoViewModel?.userInfo?.value?.email}")
+        userInfoViewModel?.apply {
+            projectsAdapter?.value = ProjectsAdapter()
+            projectsAdapter?.value?.submitList(userInfo?.value?.cursusUsers)
+        }
 
+        binding.projectsRecycler.apply {
+//            setNestedScrollingEnabled(false);
+            layoutManager = LinearLayoutManager(context)
+//            layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+            adapter = userInfoViewModel?.projectsAdapter?.value
+        }
 
 
         return binding.root
@@ -57,7 +67,7 @@ class StudentInfoFragment : Fragment() {
         _binding = null
     }
 
-    fun initViewModel() {
+    private fun initViewModel() {
         userInfoViewModel = ViewModelProvider(requireActivity()).get(UserInfoViewModel::class.java)
     }
 
@@ -65,6 +75,18 @@ class StudentInfoFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             mainCommunicator?.openSearchFragment()
         }
+    }
+
+    private fun setGeneralInformation() {
+        Glide
+            .with(binding.profilePicture.context)
+            .load(userInfoViewModel?.userInfo?.value?.imageUrl)
+            .into(binding.profilePicture)
+        binding.textViewLogin.text = userInfoViewModel?.userInfo?.value?.login
+        binding.textViewEmail.text = userInfoViewModel?.userInfo?.value?.email
+        binding.textViewPhone.text = userInfoViewModel?.userInfo?.value?.phone
+//        binding.textViewLevel.text = userInfoViewModel?.userInfo?
+        binding.textViewWallet.text = userInfoViewModel?.userInfo?.value?.wallet
     }
 
     companion object {

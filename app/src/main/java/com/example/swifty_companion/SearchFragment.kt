@@ -58,22 +58,16 @@ class SearchFragment : Fragment() {
 
                 try {
                     isValidLogin(login)
-
-
-
-//                    userInfoViewModel?.userInfo = MutableLiveData(it.getUserInfo(login))
                     userInfoViewModel?.userInfo?.value = it.getUserInfo(login)
-
 
 /*                    oAuth2TokenViewModel?.apply {
                         longLog(jsonFormat.encodeToString(userInfoViewModel?.userInfo))
                     }*/
-                    Log.e("TEST", "email = ${userInfoViewModel?.userInfo?.value?.email}")
+                    Log.e(TAG, "list size = ${userInfoViewModel?.userInfo?.value?.cursusUsers?.size}")
 
                     mainCommunicator?.openStudentInfoFragment()
                 }
                 catch (exception: IllegalArgumentException) {
-                    Log.e("TEST", exception.message.toString())
                     binding.searchEditText.setHint(exception.message)
                     binding.searchEditText.setText("")
                 }
@@ -86,7 +80,7 @@ class SearchFragment : Fragment() {
     }
 
     fun isValidLogin(login: String) {
-        if (login.contains(Regex("[^a-zA-Z]")))
+        if (login.contains(Regex("[^a-zA-Z0-9]")))
             throw IllegalArgumentException("Login invalid")
     }
 

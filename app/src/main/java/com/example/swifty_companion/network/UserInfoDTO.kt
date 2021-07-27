@@ -22,21 +22,21 @@ data class UserInfoDTO(
     @SerialName("wallet")
     val wallet: String,
     @SerialName("cursus_users")
-    val cursusUsers: List<cursusUsersDTO>
+    val cursusUsers: List<CursusUsersDTO>
 )
 
 @Serializable
-data class cursusUsersDTO(
+data class CursusUsersDTO(
     @SerialName("level")
     val level: String,
     @SerialName("skills")
-    val skills: List<skillsDTO>,
+    val skills: List<SkillsDTO>,
     @SerialName("cursus")
-    val cursus: cursusDTO
+    val cursus: CursusDTO
 )
 
 @Serializable
-data class skillsDTO(
+data class SkillsDTO(
     @SerialName("id")
     val id: Long,
     @SerialName("name")
@@ -46,7 +46,7 @@ data class skillsDTO(
 )
 
 @Serializable
-data class cursusDTO(
+data class CursusDTO(
     @SerialName("id")
     val id: Long,
     @SerialName("name")
