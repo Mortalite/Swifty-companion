@@ -13,6 +13,7 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 

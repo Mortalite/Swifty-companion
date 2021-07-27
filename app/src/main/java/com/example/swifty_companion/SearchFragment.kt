@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import com.example.swifty_companion.databinding.FragmentSearchBinding
 import com.example.swifty_companion.viewmodel.OAuth2TokenViewModel
+import com.example.swifty_companion.viewmodel.UserInfoViewModel
 import io.ktor.client.features.*
 import kotlinx.serialization.encodeToString
 
@@ -20,6 +22,7 @@ class SearchFragment : Fragment() {
 
     private var mainCommunicator: MainCommunicator? = null
     private var oAuth2TokenViewModel: OAuth2TokenViewModel? = null
+    private var userInfoViewModel: UserInfoViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +47,8 @@ class SearchFragment : Fragment() {
     }
 
     fun initViewModel() {
-        oAuth2TokenViewModel = ViewModelProvider(this).get(OAuth2TokenViewModel::class.java)
+        oAuth2TokenViewModel = ViewModelProvider(requireActivity()).get(OAuth2TokenViewModel::class.java)
+        userInfoViewModel = ViewModelProvider(requireActivity()).get(UserInfoViewModel::class.java)
     }
 
     fun setSearchButtonOnClick() {
@@ -55,13 +59,18 @@ class SearchFragment : Fragment() {
                 try {
                     isValidLogin(login)
 
-                    val userInfo = it.getUserInfo(login)
 
-                    oAuth2TokenViewModel?.apply {
-                        longLog(jsonFormat.encodeToString(userInfo))
-                    }
 
-                    mainCommunicator?.openStudentInfoFragment(login)
+//                    userInfoViewModel?.userInfo = MutableLiveData(it.getUserInfo(login))
+                    userInfoViewModel?.userInfo?.value = it.getUserInfo(login)
+
+
+/*                    oAuth2TokenViewModel?.apply {
+                        longLog(jsonFormat.encodeToString(userInfoViewModel?.userInfo))
+                    }*/
+                    Log.e("TEST", "email = ${userInfoViewModel?.userInfo?.value?.email}")
+
+                    mainCommunicator?.openStudentInfoFragment()
                 }
                 catch (exception: IllegalArgumentException) {
                     Log.e("TEST", exception.message.toString())

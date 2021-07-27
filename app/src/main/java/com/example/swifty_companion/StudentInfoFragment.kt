@@ -1,22 +1,25 @@
 package com.example.swifty_companion
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.swifty_companion.databinding.FragmentSearchBinding
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.swifty_companion.databinding.FragmentStudentInfoBinding
+import com.example.swifty_companion.network.UserInfoDTO
+import com.example.swifty_companion.viewmodel.OAuth2TokenViewModel
+import com.example.swifty_companion.viewmodel.UserInfoViewModel
 
 class StudentInfoFragment : Fragment() {
-
-    private var BUNDLE_LOGIN_KEY = "BUNDLE_LOGIN_KEY"
-    private var login: String? = null
 
     private var _binding: FragmentStudentInfoBinding? = null
     private val binding get() = _binding!!
 
     private var mainCommunicator: MainCommunicator? = null
+    private var userInfoViewModel: UserInfoViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,19 +33,32 @@ class StudentInfoFragment : Fragment() {
     ): View {
         _binding = FragmentStudentInfoBinding.inflate(inflater, container, false)
 
+        initViewModel()
         setNavigationOnClickListener()
-        getDataFromArguments()
+
+        binding.textViewLogin.text = userInfoViewModel?.userInfo?.value?.login
+        binding.textViewEmail.text = userInfoViewModel?.userInfo?.value?.email
+        binding.textViewPhone.text = userInfoViewModel?.userInfo?.value?.phone
+//        binding.textViewLevel.text = userInfoViewModel?.userInfo?
+        binding.textViewWallet.text = userInfoViewModel?.userInfo?.value?.wallet
+        Log.e("TEST2", "email = ${userInfoViewModel?.userInfo?.value?.email}")
+
+
+
         return binding.root
     }
 
     override fun onStart() {
         super.onStart()
-        binding.textView.text = login
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    fun initViewModel() {
+        userInfoViewModel = ViewModelProvider(requireActivity()).get(UserInfoViewModel::class.java)
     }
 
     private fun setNavigationOnClickListener() {
@@ -51,17 +67,12 @@ class StudentInfoFragment : Fragment() {
         }
     }
 
-    private fun getDataFromArguments() {
-        login = arguments?.getString(BUNDLE_LOGIN_KEY)
-    }
-
     companion object {
 
         @JvmStatic
-        fun newInstance(login: String) =
+        fun newInstance() =
             StudentInfoFragment().apply {
                 arguments = Bundle().apply {
-                    putString(BUNDLE_LOGIN_KEY, login)
                 }
             }
 

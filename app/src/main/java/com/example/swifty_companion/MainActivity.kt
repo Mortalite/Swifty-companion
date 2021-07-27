@@ -30,8 +30,8 @@ class MainActivity :    AppCompatActivity(),
         transaction.commit()
     }
 
-    override fun openStudentInfoFragment(login: String) {
-        val studentInfoFragment = StudentInfoFragment.newInstance(login)
+    override fun openStudentInfoFragment() {
+        val studentInfoFragment = StudentInfoFragment.newInstance()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.activity_main_container, studentInfoFragment)
         transaction.commit()

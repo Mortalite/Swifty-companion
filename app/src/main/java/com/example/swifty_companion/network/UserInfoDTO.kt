@@ -13,12 +13,14 @@ data class UserInfoDTO(
     val login: String,
     @SerialName("url")
     val url: String,
+    @SerialName("phone")
+    val phone: String,
     @SerialName("displayname")
     val displayName: String,
     @SerialName("image_url")
     val imageUrl: String,
     @SerialName("wallet")
-    val wallet: Long,
+    val wallet: String,
     @SerialName("cursus_users")
     val cursusUsers: List<cursusUsersDTO>
 )
