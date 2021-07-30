@@ -3,19 +3,22 @@ package com.example.swifty_companion.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import com.example.swifty_companion.databinding.ProjectItemBinding
+import com.example.swifty_companion.databinding.CursusItemBinding
+import com.example.swifty_companion.listener.AdapterListener
 import com.example.swifty_companion.network.CursusUsersDTO
 
-class ProjectsAdapter: androidx.recyclerview.widget.ListAdapter<CursusUsersDTO, ProjectsViewHolder>(itemComparator) {
+class CursusAdapter(
+    private var adapterListener: AdapterListener
+): androidx.recyclerview.widget.ListAdapter<CursusUsersDTO, CursusViewHolder>(itemComparator) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CursusViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ProjectItemBinding.inflate(layoutInflater, parent, false)
-        return ProjectsViewHolder(binding)
+        val binding = CursusItemBinding.inflate(layoutInflater, parent, false)
+        return CursusViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ProjectsViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: CursusViewHolder, position: Int) {
+        holder.bind(getItem(position), adapterListener)
     }
 
     private companion object {

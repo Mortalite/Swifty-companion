@@ -2,12 +2,11 @@ package com.example.swifty_companion
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
 import com.example.swifty_companion.databinding.ActivityMainBinding
-import com.example.swifty_companion.viewmodel.OAuth2TokenViewModel
+import com.example.swifty_companion.listener.MainListener
 
 class MainActivity :    AppCompatActivity(),
-                        MainCommunicator {
+    MainListener {
 
     private val TAG = this.javaClass.simpleName
     private lateinit var binding: ActivityMainBinding
@@ -31,7 +30,7 @@ class MainActivity :    AppCompatActivity(),
     }
 
     override fun openStudentInfoFragment() {
-        val studentInfoFragment = StudentInfoFragment.newInstance()
+        val studentInfoFragment = UserFragment.newInstance()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.activity_main_container, studentInfoFragment)
         transaction.commit()

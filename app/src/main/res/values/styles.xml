@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="style_header">
+    <style name="header">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">30dp</item>
         <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginTop">20dp</item>
         <item name="android:layout_marginBottom">20dp</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="style_component">
+    <style name="component">
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -22,7 +23,7 @@
         <item name="android:layout_marginRight">30dp</item>
     </style>
 
-    <style name="style_component_text">
+    <style name="component_text">
         <item name="android:orientation">vertical</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -30,7 +31,8 @@
         <item name="android:layout_marginLeft">30dp</item>
     </style>
 
-    <style name="style_component_ic">
+    <style name="component_ic">
+        <item name="contentDescription">Icon</item>
         <item name="android:layout_width">40dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">center</item>
@@ -38,11 +40,21 @@
         <item name="android:layout_marginLeft">30dp</item>
     </style>
 
-    <style name="style_component_text_view">
+    <style name="component_text_view">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_marginLeft">10dp</item>
+    </style>
+
+    <style name="recycler_view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginStart">30dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginEnd">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
     </style>
 
 </resources>

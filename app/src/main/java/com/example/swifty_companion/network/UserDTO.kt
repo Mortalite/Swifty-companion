@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserInfoDTO(
     @SerialName("id")
-    val id: Long,
+    val id: Int,
     @SerialName("email")
     val email: String,
     @SerialName("login")
@@ -38,7 +38,7 @@ data class CursusUsersDTO(
 @Serializable
 data class SkillsDTO(
     @SerialName("id")
-    val id: Long,
+    val id: Int,
     @SerialName("name")
     val name: String,
     @SerialName("level")
@@ -48,7 +48,7 @@ data class SkillsDTO(
 @Serializable
 data class CursusDTO(
     @SerialName("id")
-    val id: Long,
+    val id: Int,
     @SerialName("name")
     val name: String
 )

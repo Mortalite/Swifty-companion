@@ -7,12 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import com.example.swifty_companion.databinding.FragmentSearchBinding
+import com.example.swifty_companion.listener.MainListener
 import com.example.swifty_companion.viewmodel.OAuth2TokenViewModel
-import com.example.swifty_companion.viewmodel.UserInfoViewModel
+import com.example.swifty_companion.viewmodel.UserViewModel
 import io.ktor.client.features.*
-import kotlinx.serialization.encodeToString
 
 class SearchFragment : Fragment() {
 
@@ -20,13 +19,13 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    private var mainCommunicator: MainCommunicator? = null
+    private var mainListener: MainListener? = null
     private var oAuth2TokenViewModel: OAuth2TokenViewModel? = null
-    private var userInfoViewModel: UserInfoViewModel? = null
+    private var userViewModel: UserViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainCommunicator = context as MainCommunicator
+        mainListener = context as MainListener
     }
 
     override fun onCreateView(
@@ -40,7 +39,6 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -48,7 +46,7 @@ class SearchFragment : Fragment() {
 
     fun initViewModel() {
         oAuth2TokenViewModel = ViewModelProvider(requireActivity()).get(OAuth2TokenViewModel::class.java)
-        userInfoViewModel = ViewModelProvider(requireActivity()).get(UserInfoViewModel::class.java)
+        userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
     }
 
     fun setSearchButtonOnClick() {
@@ -58,14 +56,14 @@ class SearchFragment : Fragment() {
 
                 try {
                     isValidLogin(login)
-                    userInfoViewModel?.userInfo?.value = it.getUserInfo(login)
+                    userViewModel?.userInfo?.value = it.getUserInfo(login)
 
 /*                    oAuth2TokenViewModel?.apply {
                         longLog(jsonFormat.encodeToString(userInfoViewModel?.userInfo))
                     }*/
-                    Log.e(TAG, "list size = ${userInfoViewModel?.userInfo?.value?.cursusUsers?.size}")
+                    Log.e(TAG, "list size = ${userViewModel?.userInfo?.value?.cursusUsers?.size}")
 
-                    mainCommunicator?.openStudentInfoFragment()
+                    mainListener?.openStudentInfoFragment()
                 }
                 catch (exception: IllegalArgumentException) {
                     binding.searchEditText.setHint(exception.message)
