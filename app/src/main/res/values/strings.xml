@@ -7,4 +7,15 @@
     <string name="search_edit_text_hint">INPUT LOGIN</string>
     <string name="profile_picture">Profile picture</string>
     <string name="student_information">Student information</string>
+    <string name="login">Login</string>
+    <string name="login_value">dmortal</string>
+    <string name="email">Email</string>
+    <string name="email_value">dmortal@gmail.com</string>
+    <string name="phone">Phone</string>
+    <string name="phone_value">+372837273928</string>
+    <string name="wallet">Wallet</string>
+    <string name="wallet_value">110</string>
+    <string name="cursus">Cursus</string>
+    <string name="skills">Skills</string>
+    <string name="projects">Projects</string>
 </resources>

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1890625" />
         <entry key="app/src/main/res/layout/cursus_item.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/layout/fragment_student_info.xml" value="0.25" />
         <entry key="app/src/main/res/layout/skills_item.xml" value="0.17395833333333333" />

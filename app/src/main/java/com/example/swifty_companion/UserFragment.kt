@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.swifty_companion.adapter.CursusAdapter
@@ -51,6 +52,7 @@ class UserFragment :    Fragment(),
             layoutManager = LinearLayoutManager(context)
 //            layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
             adapter = userViewModel?.cursusAdapter?.value
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
         userViewModel?.apply {
