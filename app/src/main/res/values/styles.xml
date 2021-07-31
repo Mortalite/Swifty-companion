@@ -12,39 +12,15 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="component">
-        <item name="android:orientation">horizontal</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:layout_marginStart">30dp</item>
-        <item name="android:layout_marginLeft">30dp</item>
-        <item name="android:layout_marginEnd">30dp</item>
-        <item name="android:layout_marginRight">30dp</item>
-    </style>
-
-    <style name="component_text">
+    <style name="information_text">
         <item name="android:orientation">vertical</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">30dp</item>
-        <item name="android:layout_marginLeft">30dp</item>
     </style>
 
-    <style name="component_ic">
-        <item name="contentDescription">Icon</item>
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginStart">30dp</item>
-        <item name="android:layout_marginLeft">30dp</item>
-    </style>
-
-    <style name="component_text_view">
+    <style name="information_text_view">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">10dp</item>
-        <item name="android:layout_marginLeft">10dp</item>
     </style>
 
     <style name="recycler_view">

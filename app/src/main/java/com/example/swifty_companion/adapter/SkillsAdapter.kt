@@ -4,10 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.example.swifty_companion.databinding.SkillsItemBinding
-import com.example.swifty_companion.listener.AdapterListener
 import com.example.swifty_companion.network.SkillsDTO
 
-class SkillsAdapter : androidx.recyclerview.widget.ListAdapter<SkillsDTO, SkillsViewHolder>(itemComparator)
+class SkillsAdapter: androidx.recyclerview.widget.ListAdapter<SkillsDTO, SkillsViewHolder>(itemComparator)
 {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SkillsViewHolder {

@@ -12,6 +12,7 @@ import com.example.swifty_companion.listener.MainListener
 import com.example.swifty_companion.viewmodel.OAuth2TokenViewModel
 import com.example.swifty_companion.viewmodel.UserViewModel
 import io.ktor.client.features.*
+import kotlinx.serialization.encodeToString
 
 class SearchFragment : Fragment() {
 
@@ -58,18 +59,20 @@ class SearchFragment : Fragment() {
                     isValidLogin(login)
                     userViewModel?.userInfo?.value = it.getUserInfo(login)
 
-/*                    oAuth2TokenViewModel?.apply {
-                        longLog(jsonFormat.encodeToString(userInfoViewModel?.userInfo))
-                    }*/
+                    oAuth2TokenViewModel?.apply {
+                        longLog(jsonFormat.encodeToString(userViewModel?.userInfo?.value))
+                    }
                     Log.e(TAG, "list size = ${userViewModel?.userInfo?.value?.cursusUsers?.size}")
 
                     mainListener?.openStudentInfoFragment()
                 }
                 catch (exception: IllegalArgumentException) {
+                    Log.e(TAG, "IllegalArgumentException ${exception.message}")
                     binding.searchEditText.setHint(exception.message)
                     binding.searchEditText.setText("")
                 }
                 catch (exception: ResponseException) {
+                    Log.e(TAG, "ResponseException ${exception.message}")
                     binding.searchEditText.setHint(exception.response.status.description)
                     binding.searchEditText.setText("")
                 }

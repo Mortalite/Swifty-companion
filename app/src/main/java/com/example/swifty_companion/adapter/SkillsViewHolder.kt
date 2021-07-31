@@ -4,10 +4,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.swifty_companion.databinding.SkillsItemBinding
 import com.example.swifty_companion.listener.AdapterListener
 import com.example.swifty_companion.network.SkillsDTO
+import com.example.swifty_companion.viewmodel.UserViewModel
 
-class SkillsViewHolder(private val binding: SkillsItemBinding): RecyclerView.ViewHolder(binding.root) {
-
-    private val TAG = this.javaClass.simpleName
+class SkillsViewHolder(
+    private val binding: SkillsItemBinding
+): RecyclerView.ViewHolder(binding.root) {
 
     fun bind(skillsDTO: SkillsDTO) {
         binding.apply {
@@ -15,4 +16,5 @@ class SkillsViewHolder(private val binding: SkillsItemBinding): RecyclerView.Vie
             skillLevelTextView.text = "${skillsDTO.level} lvl"
         }
     }
+
 }

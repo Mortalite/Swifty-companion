@@ -84,7 +84,7 @@ class OAuth2TokenViewModel: ViewModel() {
                 }
             }
             install(JsonFeature) {
-                serializer = KotlinxSerializer(json = jsonFormat)
+                serializer = KotlinxSerializer(jsonFormat)
             }
         }
     }
