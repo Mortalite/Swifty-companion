@@ -1,6 +1,7 @@
 package com.example.swifty_companion.adapter
 
 import androidx.recyclerview.widget.RecyclerView
+import com.example.swifty_companion.Utils
 import com.example.swifty_companion.databinding.CursusItemBinding
 import com.example.swifty_companion.listener.AdapterListener
 import com.example.swifty_companion.network.CursusUsersDTO
@@ -14,7 +15,7 @@ class CursusViewHolder(
     fun bind(cursusUsersDTO: CursusUsersDTO) {
         binding.apply {
             cursusNameTextView.text = cursusUsersDTO.cursus.name
-            cursusLevelTextView.text = "${cursusUsersDTO.level} lvl"
+            cursusLevelTextView.text = Utils.getFormatLevel(cursusUsersDTO.level)
             cursusButton.setOnClickListener {
                 adapterListener.onCursusClick(
                     cursusUsersDTO.cursus.id,

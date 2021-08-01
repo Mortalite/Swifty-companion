@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cursus_button"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
+    app:layout_constrainedHeight="true"
+    app:layout_constraintHeight_min="60dp"
     android:gravity="center"
     android:orientation="horizontal"
     android:background="@color/white">
@@ -12,7 +14,7 @@
     <ImageView
         android:id="@+id/information_image_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
         android:layout_weight="4"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat

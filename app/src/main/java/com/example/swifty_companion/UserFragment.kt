@@ -1,7 +1,6 @@
 package com.example.swifty_companion
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,23 +8,19 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.example.swifty_companion.adapter.CursusAdapter
-import com.example.swifty_companion.adapter.InformationAdapter
-import com.example.swifty_companion.adapter.ProjectsAdapter
-import com.example.swifty_companion.adapter.SkillsAdapter
-import com.example.swifty_companion.databinding.FragmentStudentInfoBinding
+import com.example.swifty_companion.Utils.Companion.loadUrl
+import com.example.swifty_companion.adapter.*
+import com.example.swifty_companion.databinding.FragmentUserBinding
 import com.example.swifty_companion.listener.AdapterListener
 import com.example.swifty_companion.listener.MainListener
 import com.example.swifty_companion.network.InformationEntity
 import com.example.swifty_companion.viewmodel.UserViewModel
-import java.text.SimpleDateFormat
 import java.util.*
 
 class UserFragment :    Fragment(),
                         AdapterListener {
 
-    private var _binding: FragmentStudentInfoBinding? = null
+    private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding!!
 
     private var mainListener: MainListener? = null
@@ -41,7 +36,7 @@ class UserFragment :    Fragment(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentStudentInfoBinding.inflate(inflater, container, false)
+        _binding = FragmentUserBinding.inflate(inflater, container, false)
 
         initViewModel()
         setNavigationOnClickListener()
@@ -49,6 +44,7 @@ class UserFragment :    Fragment(),
         setCourses()
         setSkills()
         setProjects()
+        setAchievements()
 
         return binding.root
     }
@@ -64,24 +60,17 @@ class UserFragment :    Fragment(),
                 it.cursus.id == id
             }
 
-            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
-            val projects = userInfo?.value?.projectsUsers
-                ?.filter {
-                    !it.markedAt.isNullOrBlank() &&
-                    it.cursusIds.contains(id)
-                }
-                ?.sortedBy { sdf.parse(it.markedAt) }
-
             buttonSettings?.position = adapterPosition
             buttonSettings?.id = id
             cursusAdapter?.value?.notifyDataSetChanged()
             skillsAdapter?.value?.submitList(cursus?.skills)
-            projectsAdapter?.value?.submitList(projects)
+            projectsAdapter?.value?.submitList(getProjectsById(id))
         }
     }
 
     private fun initViewModel() {
         userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
+        userViewModel?.resetButtonSettings()
     }
 
     private fun setNavigationOnClickListener() {
@@ -91,21 +80,26 @@ class UserFragment :    Fragment(),
     }
 
     private fun setInformation() {
-        Glide
-            .with(binding.profilePicture.context)
-            .load(userViewModel?.userInfo?.value?.imageUrl)
-            .into(binding.profilePicture)
+        userViewModel?.userInfo?.value?.imageUrl?.let { binding.profilePicture.loadUrl(it) }
 
-        var list: List<InformationEntity> = listOf(
-            InformationEntity(R.drawable.ic_login_foreground, "Login", userViewModel?.userInfo?.value?.login.toString()),
-            InformationEntity(R.drawable.ic_email_foreground, "Email", userViewModel?.userInfo?.value?.email.toString()),
-            InformationEntity(R.drawable.ic_phone_foreground, "Phone", userViewModel?.userInfo?.value?.phone.toString()),
-            InformationEntity(R.drawable.ic_wallet_foreground, "Wallet", userViewModel?.userInfo?.value?.wallet.toString())
+        val infoList: MutableList<InformationEntity> = mutableListOf(
+            InformationEntity(R.mipmap.ic_login_round, "Login", userViewModel?.userInfo?.value?.login.toString()),
+            InformationEntity(R.mipmap.ic_email_round, "Email", userViewModel?.userInfo?.value?.email.toString()),
+            InformationEntity(R.mipmap.ic_phone_round, "Phone", userViewModel?.userInfo?.value?.phone.toString()),
+            InformationEntity(R.mipmap.ic_wallet_round, "Wallet", userViewModel?.userInfo?.value?.wallet.toString())
         )
+
+        userViewModel?.userInfo?.value?.campus?.let {
+            if (it.isNotEmpty()) {
+                infoList.add(
+                    InformationEntity(R.mipmap.ic_campus_round, "Campus", "${it[0].country}, ${it[0].city}")
+                )
+            }
+        }
 
         userViewModel?.apply {
             informationAdapter?.value = InformationAdapter()
-            informationAdapter?.value?.submitList(list)
+            informationAdapter?.value?.submitList(infoList)
         }
 
         binding.informationRecyclerView.apply {
@@ -143,21 +137,14 @@ class UserFragment :    Fragment(),
 
     private fun setProjects() {
         userViewModel?.apply {
-            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
-            val id = userInfo?.value?.cursusUsers?.get(0)?.cursus?.id
+            val id = getCourseIdByPosition(0)
 
-            var list = userInfo?.value?.projectsUsers
-                ?.filter {
-                    !it.markedAt.isNullOrBlank() &&
-                    it.cursusIds.contains(id)
-                }
-                ?.sortedBy { sdf.parse(it.markedAt) }
+            if (id != null) {
+                val projectsList = getProjectsById(id)
 
-            Log.e("TEST", "it.cursusIds = ${userInfo?.value?.projectsUsers?.get(0)?.cursusIds}")
-            Log.e("TEST", "buttonSettings?.id = ${buttonSettings?.id}")
-
-            projectsAdapter?.value = ProjectsAdapter()
-            projectsAdapter?.value?.submitList(list)
+                projectsAdapter?.value = ProjectsAdapter()
+                projectsAdapter?.value?.submitList(projectsList)
+            }
         }
 
         binding.projectsRecyclerView.apply {
@@ -165,6 +152,32 @@ class UserFragment :    Fragment(),
             adapter = userViewModel?.projectsAdapter?.value
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+    }
+
+    private fun setAchievements() {
+        userViewModel?.apply {
+            achievementsAdapter?.value = AchievementsAdapter()
+            achievementsAdapter?.value?.submitList(userInfo?.value?.achievements)
+
+            binding.achievementsRecyclerView.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = achievementsAdapter?.value
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            }
+        }
+    }
+
+    private fun getCourseIdByPosition(position: Int) = run {
+        userViewModel?.userInfo?.value?.cursusUsers?.get(position)?.cursus?.id
+    }
+
+    private fun getProjectsById(id: Int) = run {
+        userViewModel?.userInfo?.value?.projectsUsers
+            ?.filter {
+                it.cursusIds.contains(id) &&
+                it.project.parentId == null
+            }
+            ?.sortedWith((compareBy { it.markedAt.toString() }))
     }
 
     companion object {

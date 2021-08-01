@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.example.swifty_companion.databinding.FragmentSearchBinding
 import com.example.swifty_companion.listener.MainListener
 import com.example.swifty_companion.viewmodel.OAuth2TokenViewModel
+import com.example.swifty_companion.viewmodel.OAuth2TokenViewModel.Companion.longLog
 import com.example.swifty_companion.viewmodel.UserViewModel
 import io.ktor.client.features.*
 import kotlinx.serialization.encodeToString
@@ -59,10 +60,12 @@ class SearchFragment : Fragment() {
                     isValidLogin(login)
                     userViewModel?.userInfo?.value = it.getUserInfo(login)
 
+/*
                     oAuth2TokenViewModel?.apply {
-                        longLog(jsonFormat.encodeToString(userViewModel?.userInfo?.value))
+                        longLog(Utils.jsonFormat.encodeToString(userViewModel?.userInfo?.value))
                     }
                     Log.e(TAG, "list size = ${userViewModel?.userInfo?.value?.cursusUsers?.size}")
+*/
 
                     mainListener?.openStudentInfoFragment()
                 }

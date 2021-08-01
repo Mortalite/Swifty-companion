@@ -3,15 +3,14 @@ package com.example.swifty_companion.viewmodel
 import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.swifty_companion.adapter.CursusAdapter
-import com.example.swifty_companion.adapter.InformationAdapter
-import com.example.swifty_companion.adapter.ProjectsAdapter
-import com.example.swifty_companion.adapter.SkillsAdapter
+import androidx.lifecycle.viewModelScope
+import coil.ImageLoader
+import com.example.swifty_companion.adapter.*
 import com.example.swifty_companion.network.UserInfoDTO
 
 class UserViewModel: ViewModel() {
 
-    data class onClickButtonSettings(
+    data class ButtonSettings(
         var position: Int = 0,
         var id: Int = 0,
         val colorInit: Int = Color.WHITE,
@@ -23,7 +22,8 @@ class UserViewModel: ViewModel() {
     var cursusAdapter: MutableLiveData<CursusAdapter>? = null
     var skillsAdapter: MutableLiveData<SkillsAdapter>? = null
     var projectsAdapter: MutableLiveData<ProjectsAdapter>? = null
-    var buttonSettings: onClickButtonSettings? = null
+    var achievementsAdapter: MutableLiveData<AchievementsAdapter>? = null
+    var buttonSettings: ButtonSettings? = null
 
     init {
         userInfo = MutableLiveData()
@@ -31,8 +31,12 @@ class UserViewModel: ViewModel() {
         cursusAdapter = MutableLiveData()
         skillsAdapter = MutableLiveData()
         projectsAdapter = MutableLiveData()
-        buttonSettings = onClickButtonSettings()
+        achievementsAdapter = MutableLiveData()
+        resetButtonSettings()
     }
 
+    fun resetButtonSettings() {
+        buttonSettings = ButtonSettings()
+    }
 
 }

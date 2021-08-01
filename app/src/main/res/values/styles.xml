@@ -4,12 +4,12 @@
     <style name="header">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">30dp</item>
-        <item name="android:layout_marginLeft">30dp</item>
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:layout_marginBottom">20dp</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="information_text">
@@ -26,11 +26,20 @@
     <style name="recycler_view">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="layout_constrainedHeight">true</item>
+        <item name="layout_constraintHeight_max">320dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginStart">30dp</item>
         <item name="android:layout_marginLeft">30dp</item>
         <item name="android:layout_marginEnd">30dp</item>
         <item name="android:layout_marginRight">30dp</item>
     </style>
+
+    <!--
+                        app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+    -->
 
 </resources>

@@ -2,6 +2,7 @@ package com.example.swifty_companion.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.swifty_companion.Utils
 import com.example.swifty_companion.network.ClientCredentialsDTO
 import com.example.swifty_companion.network.UserInfoDTO
 import io.ktor.client.*
@@ -14,49 +15,18 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class OAuth2TokenViewModel: ViewModel() {
 
     var client: HttpClient? = null
     var clientCredentials: ClientCredentialsDTO? = null
-    val jsonFormat = Json {
-        isLenient = true
-        ignoreUnknownKeys = true
-        prettyPrint = true
-    }
 
     init {
         initClient()
-
-/*//        Log.e("OAUTH2 USER INFO", format.encodeToString(getUserInfo("dmortal")))
-        getUserInfo("dmortal")?.let { longLog(format.encodeToString(it)) }
-        runBlocking {
-            delay(1000L * 1L)
-        }
-        Log.e("OAUTH2 CLIENT", format.encodeToString(clientCredentials))
-        runBlocking {
-            delay(1000L * 1L)
-        }
-        try {
-            val id = getUserInfo("NOTEXISTLOGINFORSURE")
-        }
-        catch (exception: ResponseException) {
-            Log.e("TEST", "id = ${exception.response.status}")
-
-        }
-//        Log.e("OAUTH2 USER INFO", format.encodeToString(getUserInfo("NOTEXISTLOGINFORSURE")))
-//        Log.e("OAUTH2 CLIENT", format.encodeToString(clientCredentials))*/
-    }
-
-    fun longLog(string: String) {
-        if (string.length > 1000) {
-            Log.e("OAUTH2", string.substring(0, 1000));
-            longLog(string.substring(1000));
-        }
-        else
-            Log.e("OAUTH2", string);
     }
 
     fun getUserInfo(login: String): UserInfoDTO? = run {
@@ -84,10 +54,11 @@ class OAuth2TokenViewModel: ViewModel() {
                 }
             }
             install(JsonFeature) {
-                serializer = KotlinxSerializer(jsonFormat)
+                serializer = KotlinxSerializer(Utils.jsonFormat)
             }
         }
     }
+
     fun fetchBearerToken() {
         Log.e("OAUTH2", "FETCH TOKENS")
         clientCredentials = getClientCredentials(client)
@@ -110,6 +81,19 @@ class OAuth2TokenViewModel: ViewModel() {
                 )
             }?.receive<ClientCredentialsDTO>()
         }
+    }
+
+    companion object {
+
+        fun longLog(string: String) {
+            if (string.length > 1000) {
+                Log.d("OAUTH2", string.substring(0, 1000));
+                longLog(string.substring(1000));
+            }
+            else
+                Log.d("OAUTH2", string);
+        }
+
     }
 
 }
