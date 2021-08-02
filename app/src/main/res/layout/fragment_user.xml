@@ -9,16 +9,17 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:navigationIcon="@mipmap/ic_back_button"
-        android:background="?attr/colorPrimary" />
+        android:background="?attr/colorPrimary"/>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
+        android:id="@+id/nested_scroll_view"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
@@ -26,116 +27,115 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/grey_100">
+            android:background="@color/grey_100"
+            app:layout_constraintTop_toBottomOf="@id/nested_scroll_view"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
                 android:id="@+id/profile_picture"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="225dp"
+                android:layout_height="225dp"
+                android:layout_marginTop="20dp"
                 android:layout_gravity="center"
                 android:background="@color/black"
-                android:contentDescription="@string/profile_picture"/>
+                android:contentDescription="@string/profile_picture"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/user_header"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
             <TextView
+                android:id="@+id/user_header"
                 style="@style/header"
-                android:text="@string/student_information"/>
+                android:text="@string/user_information"
+                app:layout_constraintTop_toBottomOf="@id/profile_picture"
+                app:layout_constraintBottom_toTopOf="@id/information_recycler_view"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/information_recycler_view"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    style="@style/recycler_view"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/information_recycler_view"
+                app:layout_constraintTop_toBottomOf="@id/user_header"
+                app:layout_constraintBottom_toTopOf="@id/cursus_header"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                style="@style/recycler_view" />
 
             <TextView
+                android:id="@+id/cursus_header"
                 style="@style/header"
-                android:text="@string/cursus"/>
+                android:text="@string/cursus"
+                app:layout_constraintTop_toBottomOf="@id/information_recycler_view"
+                app:layout_constraintBottom_toTopOf="@id/cursus_recycler_view"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/cursus_recycler_view"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    style="@style/recycler_view"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cursus_recycler_view"
+                app:layout_constraintTop_toBottomOf="@id/cursus_header"
+                app:layout_constraintBottom_toTopOf="@id/skills_header"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                style="@style/recycler_view"/>
 
             <TextView
+                android:id="@+id/skills_header"
                 style="@style/header"
-                android:text="@string/skills"/>
+                android:text="@string/skills"
+                app:layout_constraintTop_toBottomOf="@id/cursus_recycler_view"
+                app:layout_constraintBottom_toTopOf="@id/skills_recycler_view"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/skills_recycler_view"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    style="@style/recycler_view"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/skills_recycler_view"
+                app:layout_constraintTop_toBottomOf="@id/skills_header"
+                app:layout_constraintBottom_toTopOf="@id/projects_header"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                style="@style/recycler_view"/>
 
             <TextView
+                android:id="@+id/projects_header"
                 style="@style/header"
-                android:text="@string/projects"/>
+                android:text="@string/projects"
+                app:layout_constraintTop_toBottomOf="@id/skills_recycler_view"
+                app:layout_constraintBottom_toTopOf="@id/projects_recycler_view"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/projects_recycler_view"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    style="@style/recycler_view"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/projects_recycler_view"
+                app:layout_constraintTop_toBottomOf="@id/projects_header"
+                app:layout_constraintBottom_toTopOf="@id/achievement_header"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                style="@style/recycler_view"/>
 
             <TextView
+                android:id="@+id/achievement_header"
                 style="@style/header"
-                android:text="@string/achievements"/>
+                android:text="@string/achievements"
+                app:layout_constraintTop_toBottomOf="@id/projects_recycler_view"
+                app:layout_constraintBottom_toTopOf="@id/achievements_recycler_view"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/achievements_recycler_view"
+                app:layout_constraintTop_toBottomOf="@id/achievement_header"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                style="@style/recycler_view"/>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/achievements_recycler_view"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    style="@style/recycler_view"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </LinearLayout>
-
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 

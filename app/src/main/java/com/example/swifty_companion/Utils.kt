@@ -8,6 +8,7 @@ import coil.request.ImageRequest
 import kotlinx.serialization.json.Json
 import java.text.NumberFormat
 import java.util.*
+import kotlin.math.floor
 
 class Utils {
 
@@ -33,6 +34,11 @@ class Utils {
                 .build()
 
             enqueue(request)
+        }
+
+        fun getDecimalProgress(level: String): Int {
+            val doubleLevel = level.toDouble()
+            return ((doubleLevel - floor(doubleLevel)) * 100).toInt()
         }
 
     }

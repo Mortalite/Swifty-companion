@@ -1,10 +1,9 @@
 package com.example.swifty_companion.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import com.example.swifty_companion.databinding.CursusItemBinding
+import com.example.swifty_companion.databinding.ProgressItemBinding
 import com.example.swifty_companion.listener.AdapterListener
 import com.example.swifty_companion.network.CursusUsersDTO
 import com.example.swifty_companion.viewmodel.UserViewModel
@@ -16,7 +15,7 @@ class CursusAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CursusViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = CursusItemBinding.inflate(layoutInflater, parent, false)
+        val binding = ProgressItemBinding.inflate(layoutInflater, parent, false)
         return CursusViewHolder(binding, adapterListener)
     }
 

@@ -19,6 +19,8 @@ data class UserInfoDTO(
     val displayName: String,
     @SerialName("image_url")
     val imageUrl: String,
+    @SerialName("correction_point")
+    val correctionPoint: String,
     @SerialName("wallet")
     val wallet: String,
     @SerialName("cursus_users")
@@ -37,6 +39,8 @@ data class CursusUsersDTO(
     val level: String,
     @SerialName("skills")
     val skills: List<SkillsDTO>,
+    @SerialName("begin_at")
+    val beginAt: String?,
     @SerialName("cursus")
     val cursus: CursusDTO
 )

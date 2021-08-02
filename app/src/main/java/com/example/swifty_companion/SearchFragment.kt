@@ -37,6 +37,7 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         initViewModel()
+        setAnimationViewOnClick()
         setSearchButtonOnClick()
         return binding.root
     }
@@ -51,6 +52,17 @@ class SearchFragment : Fragment() {
         userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
     }
 
+    fun setAnimationViewOnClick() {
+        binding.animationView.apply {
+            setOnClickListener {
+                if (isAnimating)
+                    cancelAnimation()
+                else
+                    resumeAnimation()
+            }
+        }
+    }
+
     fun setSearchButtonOnClick() {
         binding.searchButton.setOnClickListener {
             oAuth2TokenViewModel?.let {
@@ -59,24 +71,16 @@ class SearchFragment : Fragment() {
                 try {
                     isValidLogin(login)
                     userViewModel?.userInfo?.value = it.getUserInfo(login)
-
-/*
-                    oAuth2TokenViewModel?.apply {
-                        longLog(Utils.jsonFormat.encodeToString(userViewModel?.userInfo?.value))
-                    }
-                    Log.e(TAG, "list size = ${userViewModel?.userInfo?.value?.cursusUsers?.size}")
-*/
-
                     mainListener?.openStudentInfoFragment()
                 }
                 catch (exception: IllegalArgumentException) {
                     Log.e(TAG, "IllegalArgumentException ${exception.message}")
-                    binding.searchEditText.setHint(exception.message)
+                    binding.searchEditText.setHint(trimMessage(exception.message))
                     binding.searchEditText.setText("")
                 }
                 catch (exception: ResponseException) {
                     Log.e(TAG, "ResponseException ${exception.message}")
-                    binding.searchEditText.setHint(exception.response.status.description)
+                    binding.searchEditText.setHint(trimMessage(exception.response.status.description))
                     binding.searchEditText.setText("")
                 }
             }
@@ -86,6 +90,12 @@ class SearchFragment : Fragment() {
     fun isValidLogin(login: String) {
         if (login.contains(Regex("[^a-zA-Z0-9]")))
             throw IllegalArgumentException("Login invalid")
+    }
+
+    fun trimMessage(message: String?): String {
+        if (message == null || message.length > 20)
+            return "Login invalid"
+        return message
     }
 
     companion object {

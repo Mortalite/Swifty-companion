@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import com.example.swifty_companion.adapter.*
-import com.example.swifty_companion.network.UserInfoDTO
+import com.example.swifty_companion.network.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class UserViewModel: ViewModel() {
 
@@ -25,6 +27,42 @@ class UserViewModel: ViewModel() {
     var achievementsAdapter: MutableLiveData<AchievementsAdapter>? = null
     var buttonSettings: ButtonSettings? = null
 
+    val cursusUsers: List<CursusUsersDTO>?
+        get() {
+            userInfo?.value?.cursusUsers.let {
+                if (it.isNullOrEmpty())
+                    return null
+                return it
+            }
+        }
+
+    val skills: List<SkillsDTO>?
+        get() {
+            getCoursesSortedDate()?.get(0)?.skills.let {
+                if (it.isNullOrEmpty())
+                    return null
+                return it.sortedWith(compareBy(nullsFirst(), { it.level.toDouble()}))
+            }
+        }
+
+    val projectsUsers: List<ProjectsUsersDTO>?
+        get() {
+            userInfo?.value?.projectsUsers.let {
+                if (it.isNullOrEmpty())
+                    return null
+                return it
+            }
+        }
+
+    val achievements: List<AchievementsDTO>?
+        get() {
+            userInfo?.value?.achievements.let {
+                if (it.isNullOrEmpty())
+                    return null
+                return it
+            }
+        }
+
     init {
         userInfo = MutableLiveData()
         informationAdapter = MutableLiveData()
@@ -33,6 +71,33 @@ class UserViewModel: ViewModel() {
         projectsAdapter = MutableLiveData()
         achievementsAdapter = MutableLiveData()
         resetButtonSettings()
+    }
+
+    fun getProjectsById(id: Int) = run {
+        projectsUsers
+            ?.filter {
+                it.cursusIds.contains(id) &&
+                it.project.parentId == null
+            }
+    }
+
+    fun getProjectsByIdSortedDate(id: Int) = run {
+        getProjectsById(id)
+        ?.sortedWith((compareBy { it.markedAt.toString() }))
+    }
+
+    fun getCourseIdByPosition(position: Int) = run {
+        getCoursesSortedDate()?.get(position)?.cursus?.id
+    }
+
+    fun getCoursesSortedDate(): List<CursusUsersDTO>? = run {
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+
+        with(cursusUsers) {
+            if (isNullOrEmpty())
+                return null
+            sortedWith((compareBy { sdf.parse(it.beginAt.toString()) }))
+        }
     }
 
     fun resetButtonSettings() {

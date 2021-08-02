@@ -3,7 +3,7 @@ package com.example.swifty_companion.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import com.example.swifty_companion.databinding.SkillsItemBinding
+import com.example.swifty_companion.databinding.ProgressItemBinding
 import com.example.swifty_companion.network.SkillsDTO
 
 class SkillsAdapter: androidx.recyclerview.widget.ListAdapter<SkillsDTO, SkillsViewHolder>(itemComparator)
@@ -11,7 +11,7 @@ class SkillsAdapter: androidx.recyclerview.widget.ListAdapter<SkillsDTO, SkillsV
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SkillsViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = SkillsItemBinding.inflate(layoutInflater, parent, false)
+        val binding = ProgressItemBinding.inflate(layoutInflater, parent, false)
         return SkillsViewHolder(binding)
     }
 

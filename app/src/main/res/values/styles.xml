@@ -2,14 +2,18 @@
 <resources>
 
     <style name="header">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginTop">20dp</item>
-        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_marginStart">30dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginEnd">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/shape_header</item>
     </style>
 
     <style name="information_text">
@@ -23,6 +27,43 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="achievement_text">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="achievement_text_view">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="progress_layout" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">75dp</item>
+    </style>
+
+    <style name="progress_name_text_view">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="progress_level_text_view">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="progressbar" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
     <style name="recycler_view">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -34,12 +75,5 @@
         <item name="android:layout_marginEnd">30dp</item>
         <item name="android:layout_marginRight">30dp</item>
     </style>
-
-    <!--
-                        app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-    -->
 
 </resources>
