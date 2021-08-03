@@ -73,8 +73,8 @@ data class ProjectsUsersDTO(
     val project: ProjectDTO,
     @SerialName("cursus_ids")
     val cursusIds: List<Int>,
-    @SerialName("marked_at")
-    val markedAt: String?,
+    @SerialName("created_at")
+    val createdAt: String,
 )
 
 @Serializable

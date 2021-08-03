@@ -15,10 +15,13 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.lang.Thread.sleep
+import kotlin.concurrent.thread
 
 class OAuth2TokenViewModel: ViewModel() {
 
@@ -60,7 +63,7 @@ class OAuth2TokenViewModel: ViewModel() {
     }
 
     fun fetchBearerToken() {
-        Log.e("OAUTH2", "FETCH TOKENS")
+        Log.d("OAUTH2", "FETCH TOKENS")
         clientCredentials = getClientCredentials(client)
     }
 
@@ -87,11 +90,11 @@ class OAuth2TokenViewModel: ViewModel() {
 
         fun longLog(string: String) {
             if (string.length > 1000) {
-                Log.d("OAUTH2", string.substring(0, 1000));
-                longLog(string.substring(1000));
+                Log.d("OAUTH2", string.substring(0, 1000))
+                longLog(string.substring(1000))
             }
             else
-                Log.d("OAUTH2", string);
+                Log.d("OAUTH2", string)
         }
 
     }

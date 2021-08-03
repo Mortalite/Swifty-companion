@@ -60,14 +60,10 @@ class UserFragment :    Fragment(),
 
     override fun onCursusClick(id: Int, adapterPosition: Int) {
         userViewModel?.apply {
-            val cursus = userInfo?.value?.cursusUsers?.find {
-                it.cursus.id == id
-            }
-
             buttonSettings?.position = adapterPosition
             buttonSettings?.id = id
             cursusAdapter?.value?.notifyDataSetChanged()
-            skillsAdapter?.value?.submitList(cursus?.skills)
+            skillsAdapter?.value?.submitList(getSkillsByIdSortedLevel(id))
             projectsAdapter?.value?.submitList(getProjectsByIdSortedDate(id))
         }
     }
@@ -131,18 +127,18 @@ class UserFragment :    Fragment(),
 
     private fun setSkills() {
         userViewModel?.apply {
-            skills.let {
-                if (it == null) {
-                    binding.skillsHeader.visibility = View.GONE
-                }
-                skillsAdapter?.value = SkillsAdapter()
-                skillsAdapter?.value?.submitList(it)
+            val skills = getSkillsByPositionSortedLevel(0)
 
-                with(binding.skillsRecyclerView) {
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = skillsAdapter?.value
-                    addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-                }
+            if (skills.isNullOrEmpty()) {
+                binding.skillsHeader.visibility = View.GONE
+            }
+            skillsAdapter?.value = SkillsAdapter()
+            skillsAdapter?.value?.submitList(skills)
+
+            with(binding.skillsRecyclerView) {
+                layoutManager = LinearLayoutManager(context)
+                adapter = skillsAdapter?.value
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
         }
     }
@@ -164,7 +160,7 @@ class UserFragment :    Fragment(),
 
     private fun setAchievements() {
         userViewModel?.apply {
-            if (achievements == null) {
+            if (achievements.isNullOrEmpty()) {
                 binding.achievementHeader.visibility = View.GONE
             }
             achievementsAdapter?.value = AchievementsAdapter()

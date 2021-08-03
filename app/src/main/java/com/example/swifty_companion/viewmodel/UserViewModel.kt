@@ -38,10 +38,10 @@ class UserViewModel: ViewModel() {
 
     val skills: List<SkillsDTO>?
         get() {
-            getCoursesSortedDate()?.get(0)?.skills.let {
+            cursusUsers?.get(0)?.skills.let {
                 if (it.isNullOrEmpty())
                     return null
-                return it.sortedWith(compareBy(nullsFirst(), { it.level.toDouble()}))
+                return it
             }
         }
 
@@ -73,19 +73,6 @@ class UserViewModel: ViewModel() {
         resetButtonSettings()
     }
 
-    fun getProjectsById(id: Int) = run {
-        projectsUsers
-            ?.filter {
-                it.cursusIds.contains(id) &&
-                it.project.parentId == null
-            }
-    }
-
-    fun getProjectsByIdSortedDate(id: Int) = run {
-        getProjectsById(id)
-        ?.sortedWith((compareBy { it.markedAt.toString() }))
-    }
-
     fun getCourseIdByPosition(position: Int) = run {
         getCoursesSortedDate()?.get(position)?.cursus?.id
     }
@@ -98,6 +85,36 @@ class UserViewModel: ViewModel() {
                 return null
             sortedWith((compareBy { sdf.parse(it.beginAt.toString()) }))
         }
+    }
+
+    fun getSkillsByPositionSortedLevel(position: Int) = run {
+        getCoursesSortedDate()
+            ?.get(position)
+            ?.skills
+            ?.sortedWith(compareBy(nullsFirst(), { it.level } ))
+    }
+
+    fun getSkillsByIdSortedLevel(id: Int) = run {
+        cursusUsers?.find {
+            it.cursus.id == id
+        }
+            ?.skills
+            ?.sortedWith(compareBy(nullsFirst(), { it.level } ))
+    }
+
+    fun getProjectsById(id: Int) = run {
+        projectsUsers
+            ?.filter {
+                it.cursusIds.contains(id) &&
+                it.project.parentId == null
+            }
+    }
+
+    fun getProjectsByIdSortedDate(id: Int) = run {
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+
+        getProjectsById(id)
+        ?.sortedBy { sdf.parse(it.createdAt) }
     }
 
     fun resetButtonSettings() {
