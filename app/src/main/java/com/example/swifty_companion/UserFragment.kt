@@ -60,6 +60,9 @@ class UserFragment :    Fragment(),
 
     override fun onCursusClick(id: Int, adapterPosition: Int) {
         userViewModel?.apply {
+
+            Log.d("UF", "${getSkillsByIdSortedLevel(id)?.sortedBy { it.level }}")
+
             buttonSettings?.position = adapterPosition
             buttonSettings?.id = id
             cursusAdapter?.value?.notifyDataSetChanged()

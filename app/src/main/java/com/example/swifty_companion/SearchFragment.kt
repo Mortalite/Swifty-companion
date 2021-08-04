@@ -69,8 +69,9 @@ class SearchFragment : Fragment() {
                 val login = binding.searchEditText.text.toString()
 
                 try {
-                    isValidLogin(login)
                     userViewModel?.userInfo?.value = it.getUserInfo(login)
+                    // Debug
+                    longLog(Utils.jsonFormat.encodeToString(userViewModel?.userInfo?.value))
                     mainListener?.openStudentInfoFragment()
                 }
                 catch (exception: IllegalArgumentException) {
@@ -85,11 +86,6 @@ class SearchFragment : Fragment() {
                 }
             }
         }
-    }
-
-    fun isValidLogin(login: String) {
-        if (login.contains(Regex("[^a-zA-Z0-9]")))
-            throw IllegalArgumentException("Login invalid")
     }
 
     fun trimMessage(message: String?): String {

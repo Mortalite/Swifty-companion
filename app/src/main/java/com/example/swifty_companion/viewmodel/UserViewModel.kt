@@ -91,7 +91,7 @@ class UserViewModel: ViewModel() {
         getCoursesSortedDate()
             ?.get(position)
             ?.skills
-            ?.sortedWith(compareBy(nullsFirst(), { it.level } ))
+            ?.sortedWith(compareBy(nullsFirst(), { it.level.toDoubleOrNull()  } ))
     }
 
     fun getSkillsByIdSortedLevel(id: Int) = run {
@@ -99,14 +99,14 @@ class UserViewModel: ViewModel() {
             it.cursus.id == id
         }
             ?.skills
-            ?.sortedWith(compareBy(nullsFirst(), { it.level } ))
+            ?.sortedWith(compareBy(nullsFirst(), { it.level.toDoubleOrNull() } ))
     }
 
     fun getProjectsById(id: Int) = run {
         projectsUsers
             ?.filter {
-                it.cursusIds.contains(id) &&
-                it.project.parentId == null
+                it.cursusIds.contains(id) //&&
+//                it.project.parentId == null
             }
     }
 
